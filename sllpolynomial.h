@@ -6,7 +6,6 @@
 // PRÁCTICA Nº: 4
 // ESTILO: Google C++ Style Guide
 // COMENTARIOS:
-// 
 
 #ifndef SLLPOLYNOMIAL_H_
 #define SLLPOLYNOMIAL_H_
@@ -40,11 +39,13 @@ class SllPolynomial : public sll_t<pair_double_t> {
   double Eval(const double) const;
   bool IsEqual(const SllPolynomial&, const double = EPS) const;
   void Sum(const SllPolynomial&, SllPolynomial&, const double = EPS);
+  SllPolynomial RemoveTermByCoeff(double coeff, const double eps = EPS) const;
 };
 
 
 bool IsNotZero(const double val, const double eps = EPS) {
   return fabs(val) > eps;
+
 }
 
 // FASE II
@@ -219,7 +220,35 @@ while (aux_this != NULL || aux_other != NULL) {
       sllpolsum.insert_after(aux, nuevo_nodo);
     }
   }
+ } 
 }
-}       
+
+//MODIFICACION CLASE
+SllPolynomial SllPolynomial::RemoveTermByCoeff(double coeff,const double eps) const {
+  SllPolynomial result;
+  SllPolyNode* aux = this->get_head();
+  SllPolyNode* prev = NULL;
+
+  while (aux != NULL) {
+    double current_coeff = aux->get_data().get_val();
+    int exponente = aux->get_data().get_inx();
+
+    if (IsNotZero(current_coeff - coeff, eps)) {
+      SllPolyNode* nuevo_nodo =
+          new SllPolyNode(pair_double_t(current_coeff, exponente));
+      if (result.empty()) {
+        result.push_front(nuevo_nodo);
+      } else {
+        SllPolyNode* aux_result = result.get_head();
+        while (aux_result->get_next() != NULL) {
+          aux_result = aux_result->get_next();
+        }
+        result.insert_after(aux_result, nuevo_nodo);
+      }
+    }
+    aux = aux->get_next();
+  }
+  return result;
+}
 
 #endif  // SLLPOLYNOMIAL_H_

@@ -72,5 +72,11 @@ int main()
   sllp2.Sum(sllp3, sllpsum23);
   cout << "sllp2 + sllp3= " << sllpsum23;
 
+  //MODIFICACION CLASE
+  cout << std::endl;
+  cout << "Original: " << sllp1 << std::endl;
+  cout << "Filtrado: " << sllp1.RemoveTermByCoeff(5.6) << std::endl;
+  
   return 0;
+
 }
